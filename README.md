@@ -1,94 +1,54 @@
-# Hayatta Kalma Simulatörü
+# 🌲 Hayatta Kalma Simülatörü (Survival Simulator)
 
-## Genel Bakış
+Bu proje, C dili ile geliştirilmiş, strateji ve kaynak yönetimi odaklı, metin tabanlı (CLI) bir hayatta kalma oyunudur. Oyuncu, sınırlı kaynaklarla vahşi doğada hayatta kalmaya çalışırken riskli kararlar vermeli ve sağlık/enerji dengesini korumalıdır.
 
-Hayatta Kalma Simulatörü, bir metin tabanlı macera oyunudur. Oyunda sağlık, enerji ve kaynakları yönetirken çeşitli zorlukların üstesinden gelmeyi amaçlarsınız. Her kararınız oyunun sonucunu etkileyecektir.
+## 🕹️ Oyunun Amacı
+Amacınız, sağlığınız (HP) veya enerjiniz tükenmeden hayatta kalabildiğiniz kadar kalmaktır. Her eylem belirli bir risk taşır ve kaynaklarınızı (yemek, sığınak) tüketir veya artırır.
 
-## Oyun Mekanikler
+## ✨ Temel Mekanikler
 
-### Temel Kaynaklar
+Oyunda yönetmeniz gereken 4 ana unsur bulunmaktadır:
+- **Sağlık (HP):** %0 olduğunda oyun biter. Tehlikelerden ve açlıktan etkilenir.
+- **Enerji:** %0 olduğunda oyun biter. Her eylem enerji tüketir.
+- **Yemek:** Avlanarak elde edilir, enerji ve sağlık yönetimi için kritiktir.
+- **Sığınak:** Dinlenme sırasında alınan verimi artırır.
 
-- **Sağlık (Saglik)**: 0-100 arasında değişen değer. Sağlık 0'a ulaştığında oyun biter.
-- **Enerji (Enerji)**: 0-100 arasında değişen değer. Enerji 0'a ulaştığında oyun biter.
-- **Yemek (Yemek)**: Avlanarak elde edebileceğiniz kaynaktır.
-- **Sığınak (Siginak)**: Dinleme sırasında sağlık ve enerji geri kazanmanızı sağlar.
+## ⌨️ Komutlar ve Aksiyonlar
 
-## Oyun Komutları
+| Komut | Eylem | Detaylar |
+| :--- | :--- | :--- |
+| `A` | **Avlanma** | Yemek bulma şansı sunar. Enerji -20, yaralanma riski vardır. |
+| `S` | **Sığınak Ara** | Dinlenme verimini artırmak için sığınak bulmaya çalışır. |
+| `E` | **Envanter** | Mevcut durumunuzu (Sağlık, Enerji, Yemek) kontrol eder. |
+| `R` | **Dinlenme** | Enerji ve sağlık yeniler (Sığınak varsa daha etkilidir). |
+| `F` | **Tehlike** | Kaçma mücadelesi. Kurtulmak için şansınızı zorlayın! |
+| `P` | **Şifre** | Şifreli kapıyı açarak ekstra yemek (bonus) kazanın. |
+| `X` | **Çıkış** | Oyunu sonlandırır. |
 
-| Komut | Açıklama |
-|-------|----------|
-| **A** | Avlanma - Yemek edinmeyi deneyin (enerji: -20) |
-| **S** | Sığınak Arama - Güvenli bir sığınak bulmaya çalışın |
-| **E** | Envanter - Mevcut kaynakları görün |
-| **R** | Dinlenme - Enerji ve sağlık geri kazanın |
-| **F** | Tehlike - Tehlike bölgesinden kurtulmaya çalışın |
-| **P** | Şifre - Şifreli kapıyı açmayı deneyin |
-| **X** | Çıkış - Oyundan çıkın |
+## ⚙️ Teknik Gereksinimler ve Derleme
 
-## Komutların Detaylı Açıklaması
+Uygulamanın çalışması için sisteminizde bir C derleyicisi (GCC, Clang vb.) kurulu olmalıdır.
 
-### A - Avlanma
-Hayatta kalmak için yemek bulmanız gerekir. Avlanırken:
-- Enerji 20 azalır
-- %60 ihtimalle başarısız olursunuz
-- %30 ihtimalle yaralanırsınız (sağlık -20)
-- Başarılı olursanız yemek sayınız artar
-
-### S - Sığınak Arama
-Dinleme sırasında sağlık kazanmak için sığınağa ihtiyacınız vardır:
-- Zaten sığınağınız varsa yeni bir arama yapamazsınız
-- %40 ihtimalle sığınak bulursunuz (veya yüksek enerjiniz varsa garantili)
-- Başarısız olursanız tekrar deneyebilirsiniz
-
-### E - Envanter
-Mevcut durumunuzu kontrol etmek için kullanılır. Hiç bir ceza yoktur.
-
-### R - Dinlenme
-Enerji ve sağlık geri kazanmak için:
-- Enerji 30 artar (maksimum 100)
-- Sığınağınız varsa sağlık da 10 artar
-- Sığınaksız dinlenirseniz sadece enerji artar
-
-### F - Tehlike
-Tehlike bölgesinde 5 tur hayatta kalmaya çalışırsınız:
-- Her turda %20 ihtimalle kurtulursunuz
-- %40 ihtimalle 5-14 sağlık kaybedersiniz
-- %40 ihtimalle güvenli kalırsınız
-- Sağlık sıfıra inerse oyun biter
-
-### P - Şifre
-Şifreli kapıyı açmak için çalışırsınız:
-- Doğru cevap: **G**
-- Her 2 yanlış denemede enerji 5 azalır
-- Başarılı olursanız 2 yemek ödülü kazanırsınız
-
-## Oyun Bitişi Koşulları
-
-Oyun aşağıdaki durumlarda biter:
-- **Sağlık ≤ 0**: Ölüm
-- **Enerji ≤ 0**: Tamamen bitkinlik
-- **X komutunu girme**: Oyundan çıkma
-
-## Strateji İpuçları
-
-1. **Dengeyi koruyun**: Sağlık ve enerji her ikisini de yönetmeye çalışın.
-2. **Sığınak bulun**: Erken oyunda sığınak bulmak öncelikli olmalıdır.
-3. **Tehlikeden kaçının**: Tehlike bölgesine girmeden önce enerji ve sağlık yeterli seviyede olmalıdır.
-4. **Şifre bonusu**: Şifreli kapıyı açmak iyi bir ödül sağlar (2 yemek).
-
-## Teknik Gereksinimler
-
-- C derleyicisi (gcc, clang, vb.)
-- Standart C kütüphaneleri
-- Terminal veya konsol uygulaması
-
-## Derleme ve Çalıştırma
-
+**Derleme:**
 ```bash
 gcc survival_simulator.c -o simulator
+```
+
+Çalıştırma:
+```Bash
 ./simulator
 ```
 
-## Oyun Özeti
+## 🧠 Strateji İpuçları
+**Önce Güvenlik:** Oyunun başında sığınak bulmak, dinlenme sırasında sağlık geri kazanmanızı sağlar. Bu, hayatta kalma sürenizi ciddi oranda artırır.
 
-Bu oyun, kaynak yönetimi ve risk almanın stratejik kombinasyonunu gerektiren eğlenceli bir metin tabanlı macera sunur. Hayatta kalmak için her kararı iyi düşünmelisiniz!
+**Risk Yönetimi:** Enerjiniz %20'nin altına düştüğünde avlanmak yerine dinlenmeyi tercih edin.
+
+**Şifre Bonusu:** Yemek stoğunuz azaldığında P komutu ile şifreyi çözerek (İpucu: G) bonus yemek almaya çalışın.
+
+## 🛠️ Teknik Detaylar
+**Dil:** C
+
+**Yapı:** Standart C kütüphaneleri (stdio.h, stdlib.h, time.h) kullanılarak geliştirilmiştir
+
+**Mantık:** Rastgele olay üretimi (Probabilistic events) için rand() fonksiyonu üzerine kurgulanmış bir oyun döngüsü içerir.
